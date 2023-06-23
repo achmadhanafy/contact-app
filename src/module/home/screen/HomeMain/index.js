@@ -1,12 +1,10 @@
-import {View, Text} from 'react-native';
-import React from 'react';
+import {connect} from 'react-redux';
+import View from './View'
 
-function HomeMain() {
-  return (
-    <View>
-      <Text>HomeMain</Text>
-    </View>
-  );
-}
+const mapStateToProps = state => ({
+  colorScheme: state.general.colorScheme,
+});
 
-export default HomeMain;
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(View);

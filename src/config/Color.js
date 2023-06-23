@@ -31,4 +31,8 @@ export const Color = {
     light: 'rgba(0, 28, 48, 1)',
     dark: 'rgba(0, 28, 48, 1)',
   },
+  redDanger: {
+    light: 'rgba(210, 19, 18,1)',
+    dark: 'rgba(210, 19, 18,1)',
+  },
 };
