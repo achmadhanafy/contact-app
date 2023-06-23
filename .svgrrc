@@ -1,0 +1,8 @@
+{
+  "replaceAttrValues": {
+    "#000": "{props.stroke}",
+    "#C3C5CC": "{props.fill}",
+    "currentColor": "{props.fill}",
+    "#030D1B": "{props.fill}"
+  }
+}
