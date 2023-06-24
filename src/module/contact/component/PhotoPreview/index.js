@@ -1,18 +1,22 @@
-import {View, Text, Image} from 'react-native';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {EditPen} from '../../../../config/Svg';
 import {Color} from '../../../../config/Color';
 
-function PhotoPreview({source, colorScheme}) {
+function PhotoPreview({
+  source,
+  colorScheme,
+  onEditPress = () => {},
+  imagePick,
+}) {
   return (
     <View>
       <Image
-        source={source}
+        source={imagePick?.uri ? imagePick : source}
         style={{width: 120, height: 120, borderRadius: 24}}
       />
-      <View style={{position: 'absolute', bottom: 0, right:-10}}>
-        <TouchableOpacity>
+      <View style={{position: 'absolute', bottom: 0, right: -10}}>
+        <TouchableOpacity onPress={onEditPress}>
           <View
             style={{
               backgroundColor: Color.primary20[colorScheme],

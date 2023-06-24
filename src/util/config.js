@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Config from 'react-native-config';
 
-export const {BASE_URL} = Config;
+export const {BASE_URL, IMGBB_BASEURL, IMGBB_API_KEY} = Config;
 export const api = axios.create({
   timeout: 35000,
   headers: {
@@ -10,6 +10,15 @@ export const api = axios.create({
     Accept: 'application/json',
   },
   baseURL: BASE_URL,
+});
+
+export const apiImGb = axios.create({
+  timeout: 35000,
+  headers: {
+    'X-Requested-With': 'XMLHttpRequest',
+    'Cache-Control': 'no-store',
+  },
+  baseURL: IMGBB_BASEURL,
 });
 
 api.interceptors.request.use(

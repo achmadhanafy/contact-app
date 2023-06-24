@@ -6,3 +6,4 @@ export {default as EditPen} from '../asset/svg/EditPen.svg';
 export {default as Close} from '../asset/svg/Close.svg';
 export {default as SavePaper} from '../asset/svg/SavePaper.svg';
 export {default as DeleteData} from '../asset/svg/DeleteData.svg';
+export {default as AvatarPhoto} from '../asset/svg/AvatarPhoto.svg';

@@ -1,7 +1,7 @@
 import {View} from 'react-native';
 import React, {useEffect, useMemo, useState} from 'react';
 import {Container, Input, ModalCustom, Text} from '../../../../component';
-import {PhotoPreview} from '../../component';
+import {ModalUploadPhoto, PhotoPreview} from '../../component';
 import {DummyProfile} from '../../../../config/Image';
 import {Color} from '../../../../config/Color';
 import ContactDetailForm from './component/ContactDetailForm';
@@ -10,6 +10,7 @@ import Button from '../../../../component/Button';
 import {SIZE} from '../../../../util/constant';
 import {EditPen, SavePaper} from '../../../../config/Svg';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
+import {IMGBB_API_KEY, apiImGb} from '../../../../util/config';
 
 function ContactDetail(props) {
   const {
@@ -23,6 +24,8 @@ function ContactDetail(props) {
 
   const [editable, setEditable] = useState(false);
   const [isShowConfirm, setIsShowConfirm] = useState(false);
+  const [isShowUpload, setIsShowUpload] = useState(false);
+  const [imagePick, setImagePick] = useState({});
 
   const contactDetailForm = useContactDetailForm();
   const {contact: detailContact, setContact} = contactDetailForm;
@@ -77,6 +80,71 @@ function ContactDetail(props) {
     );
   };
 
+  const setSave = imgUrl => {
+    putContact({
+      id: detailContact.id,
+      data: {
+        firstName: detailContact.firstName,
+        lastName: detailContact.lastName,
+        age: Number(detailContact.age),
+        photo: imgUrl || detailContact.photo,
+      },
+      onSuccess: () => {
+        setEditable(false);
+        setIsShowConfirm(false);
+        Toast.show({
+          type: 'success',
+          text1: 'Data updated successfully !',
+        });
+      },
+      onFailed: () => {
+        setEditable(false);
+        setIsShowConfirm(false);
+        Toast.show({
+          type: 'error',
+          text1: 'Sorry, an error occurred !',
+        });
+        setContact(contact);
+      },
+    });
+  };
+
+  const onUploadImage = image => {
+    const payload = {
+      file: image.path,
+      fileName: image.filename ?? 'profile.jpg',
+    };
+
+    const sendData = new FormData();
+    sendData.append('image', {
+      uri: payload?.file,
+      type: 'image/jpg',
+      name: payload?.fileName,
+    });
+    apiImGb
+      .post(`1/upload?key=${IMGBB_API_KEY}`, sendData)
+      .then(res => {
+        console.log(res)
+        setSave(res?.data?.data?.url);
+      })
+      .catch(err => {
+        setEditable(false);
+        setIsShowConfirm(false);
+        Toast.show({
+          type: 'error',
+          text1: 'Sorry, an error occurred !',
+        });
+        setContact(contact);
+      });
+  };
+
+  const onSaveForm = () => {
+    if (imagePick?.path) {
+      return onUploadImage(imagePick);
+    }
+    return setSave();
+  };
+
   const renderModalConfirm = () => {
     return (
       <ModalCustom
@@ -84,36 +152,23 @@ function ContactDetail(props) {
         onClosePress={() => {
           setIsShowConfirm(false);
         }}
-        onPrimaryPress={() => {
-          putContact({
-            id: detailContact.id,
-            data: {
-              firstName: detailContact.firstName,
-              lastName: detailContact.lastName,
-              age: Number(detailContact.age),
-              photo: detailContact.photo,
-            },
-            onSuccess: () => {
-              setEditable(false);
-              setIsShowConfirm(false);
-              Toast.show({
-                type: 'success',
-                text1: 'Data updated successfully !',
-              });
-            },
-            onFailed: () => {
-              setEditable(false);
-              setIsShowConfirm(false);
-              Toast.show({
-                type: 'error',
-                text1: 'Sorry, an error occurred !',
-              });
-            },
-          });
-        }}
+        onPrimaryPress={() => onSaveForm()}
         primaryLabel="Save"
-        text="Apakah Anda Yakin Untuk Melakukan Perubahan Tersebut ?"
+        text="Are you sure to make these changes ?"
         img={<SavePaper width={150} height={150} />}
+      />
+    );
+  };
+
+  const renderModalUploadPhoto = () => {
+    return (
+      <ModalUploadPhoto
+        onClosePress={() => setIsShowUpload(false)}
+        isVisbile={isShowUpload}
+        onImagePick={img => {
+          setImagePick(img);
+          setEditable(true);
+        }}
       />
     );
   };
@@ -126,7 +181,9 @@ function ContactDetail(props) {
       <View style={{flex: 1, paddingHorizontal: 16}}>
         <View style={{alignItems: 'center'}}>
           <PhotoPreview
+            imagePick={{uri: imagePick?.path}}
             colorScheme={colorScheme}
+            onEditPress={() => setIsShowUpload(true)}
             source={
               contact.photo?.includes('http')
                 ? {uri: contact.photo}
@@ -144,6 +201,7 @@ function ContactDetail(props) {
         {renderButton()}
       </View>
       {renderModalConfirm()}
+      {renderModalUploadPhoto()}
     </Container>
   );
 }
