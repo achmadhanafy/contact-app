@@ -25,7 +25,7 @@ function* getContacts(params) {
     const response = yield call(getContactsApi, params.payload);
     yield put(getContactsSucess(response?.data));
   } catch (error) {
-    yield put(getContactsError(error?.response?.data));
+    yield put(getContactsError(error));
   }
 }
 

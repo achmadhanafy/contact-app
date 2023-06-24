@@ -1,15 +1,14 @@
 import {connect} from 'react-redux';
 import View from './View';
-import {getContactClear, getContacts} from '../../../../redux/contact/contactAction';
+import {getContact} from '../../../../redux/contact/contactAction';
 
 const mapStateToProps = state => ({
   colorScheme: state.general.colorScheme,
-  getContactsResponse: state.contact.getContactsResponse,
+  getContactResponse: state.contact.getContactResponse,
 });
 
 const mapDispatchToProps = {
-  getContacts: () => getContacts(),
-  getContactClear: () => getContactClear(),
+  getContact: payload => getContact(payload),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(View);

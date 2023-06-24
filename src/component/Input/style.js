@@ -2,7 +2,7 @@ import { Color } from "../../config/Color";
 
 export default {
   container: {
-    borderColor: Color.neutral.light,
+    borderColor: Color.black.light,
     borderWidth: 1,
     borderRadius: 24,
     paddingHorizontal: 16,

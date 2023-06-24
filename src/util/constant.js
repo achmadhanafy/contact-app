@@ -7,6 +7,9 @@ export const SCREEN = {
   Home: {
     HomeMain: 'HomeMain',
   },
+  CONTACT: {
+    ContactDetail: 'ContactDetail',
+  },
 };
 
 export const SIZE = {

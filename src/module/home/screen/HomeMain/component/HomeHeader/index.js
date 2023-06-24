@@ -30,19 +30,15 @@ function HomeHeader({colorScheme, homeHeader}) {
           </TouchableOpacity>
         </View>
 
-        <Image source={img} style={{width: 35, height: 35, borderRadius: 25}} />
+        <Image source={img} style={{width: 40, height: 40, borderRadius: 25}} />
       </View>
     );
   };
   return (
-    <View>
-      <Text size={18} weight={600}>
-        Contact List
-      </Text>
-
+    <View style={{marginBottom: 16}}>
       <Text style={{marginTop:24,marginBottom: 10}} weight={600}>Recents</Text>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-        <View style={{flexDirection: 'row', gap: 10}}>
+        <View style={{flexDirection: 'row', gap: 16}}>
           {homeHeader.contactRecent?.map(element => (
             <ContactRecent img={element?.img} />
           ))}
