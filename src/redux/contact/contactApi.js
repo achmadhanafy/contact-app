@@ -13,7 +13,7 @@ export const setContactApi = payload => {
 };
 
 export const delContactApi = payload => {
-  return api.delete(`${contactApi.contact}/${payload}`);
+  return api.delete(`${contactApi.contact}/${payload.id}`);
 };
 
 export const getContactApi = payload => {
@@ -21,5 +21,5 @@ export const getContactApi = payload => {
 };
 
 export const putContactApi = payload => {
-  return api.put(contactApi.contact, payload);
+  return api.put(`${contactApi.contact}/${payload.id}`, payload.data);
 };

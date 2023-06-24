@@ -12,17 +12,24 @@ function Input({
   label,
   editable = true,
   value,
+  onChange = () => {},
 }) {
   return (
     <View style={style}>
       {label && (
-        <Text weight={600} size={12} color={Color.black.light} style={{marginLeft: 15}}>
+        <Text
+          weight={600}
+          size={12}
+          color={Color.black.light}
+          style={{marginLeft: 15}}>
           {label}
         </Text>
       )}
       <View style={[Style.container]}>
         {prefix}
         <TextInput
+          style={{width: '100%'}}
+          onChangeText={txt => onChange(txt)}
           value={value}
           editable={editable}
           placeholder={placeholder}

@@ -41,8 +41,10 @@ function* setContact(params) {
 function* delContact(params) {
   try {
     const response = yield call(delContactApi, params.payload);
+    params.payload?.onSuccess();
     yield put(delContactSucess(response?.data));
   } catch (error) {
+    params.payload?.onFailed();
     yield put(delContactError(error?.response?.data));
   }
 }
@@ -59,8 +61,10 @@ function* getContact(params) {
 function* putContact(params) {
   try {
     const response = yield call(putContactApi, params.payload);
+    params.payload?.onSuccess();
     yield put(putContactSucess(response?.data));
   } catch (error) {
+    params.payload?.onFailed();
     yield put(putContactError(error?.response?.data));
   }
 }

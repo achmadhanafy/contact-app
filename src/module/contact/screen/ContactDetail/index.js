@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 import View from './View';
-import {getContact} from '../../../../redux/contact/contactAction';
+import {getContact, putContact} from '../../../../redux/contact/contactAction';
 
 const mapStateToProps = state => ({
   colorScheme: state.general.colorScheme,
@@ -9,6 +9,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   getContact: payload => getContact(payload),
+  putContact: payload => putContact(payload),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(View);

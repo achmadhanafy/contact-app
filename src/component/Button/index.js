@@ -1,21 +1,23 @@
-import {View} from 'react-native';
+import {View, TouchableWithoutFeedback} from 'react-native';
 import React from 'react';
-import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import {Color} from '../../config/Color';
 
 function Button({style = {}, children, onPress = () => {}}) {
   return (
-    <View
-      style={[
-        {backgroundColor: Color.primary30.light, borderRadius: 16},
-        style,
-      ]}>
-      <TouchableWithoutFeedback
-        style={{alignItems: 'center', padding: 12}}
-        onPress={onPress}>
+    <TouchableWithoutFeedback onPress={onPress}>
+      <View
+        style={[
+          {
+            backgroundColor: Color.primary30.light,
+            borderRadius: 16,
+            alignItems: 'center',
+            padding: 12,
+          },
+          style,
+        ]}>
         {children}
-      </TouchableWithoutFeedback>
-    </View>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 

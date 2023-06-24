@@ -1,16 +1,16 @@
-import {View, Image} from 'react-native';
+import {View, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {Text} from '../../../../../../component';
 import {Color} from '../../../../../../config/Color';
 import {capitalizeFirstLetter} from '../../../../../../util/function';
 import {Trash} from '../../../../../../config/Svg';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {DummyProfile} from '../../../../../../config/Image';
 
 function HomeContactList({
   homeContactList,
   colorScheme,
   onContactPress = () => {},
+  onDeletePress = () => {},
 }) {
   const {listContact} = homeContactList;
 
@@ -42,7 +42,7 @@ function HomeContactList({
             </Text>
           </View>
           <View style={{position: 'absolute', right: 20}}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => onDeletePress(element?.id)}>
               <Trash
                 fill={Color.redDanger[colorScheme]}
                 width={18}

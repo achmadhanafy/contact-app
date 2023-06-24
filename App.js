@@ -6,6 +6,7 @@ import {applyMiddleware, createStore} from 'redux';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import {reducer} from './src/redux/reducer';
 import saga from './src/redux/saga';
+import {Toast} from 'react-native-toast-message/lib/src/Toast';
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
@@ -18,6 +19,7 @@ function App() {
   return (
     <Provider store={store}>
       <Navigator />
+      <Toast />
     </Provider>
   );
 }
