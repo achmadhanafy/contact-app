@@ -9,6 +9,8 @@ import {
 const mapStateToProps = state => ({
   colorScheme: state.general.colorScheme,
   getContactsResponse: state.contact.getContactsResponse,
+  getContactsFetch: state.contact.getContactsFetch,
+  getContactsError: state.contact.getContactsError,
 });
 
 const mapDispatchToProps = {

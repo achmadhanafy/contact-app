@@ -18,6 +18,7 @@ function ContactDetailForm({colorScheme, contactDetailForm, editable = false}) {
         value={contact?.firstName}
         label="First Name"
         editable={editable}
+        placeholder="Example : Achmad"
       />
       <Input
         onChange={val => onChangeForm('lastName', val)}
@@ -25,6 +26,7 @@ function ContactDetailForm({colorScheme, contactDetailForm, editable = false}) {
         value={contact?.lastName}
         label="Last Name"
         editable={editable}
+        placeholder="Example: Hanafy"
       />
       <Input
         onChange={val => onChangeForm('age', val)}
@@ -32,6 +34,7 @@ function ContactDetailForm({colorScheme, contactDetailForm, editable = false}) {
         value={contact?.age?.toString()}
         label="Age"
         editable={editable}
+        placeholder="Example: 24"
       />
     </View>
   );

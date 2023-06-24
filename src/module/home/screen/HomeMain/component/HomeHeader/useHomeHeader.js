@@ -2,38 +2,7 @@ import {useState} from 'react';
 import {DummyProfile} from '../../../../../../config/Image';
 
 const useHomeHeader = () => {
-  const [contactRecent, setContactRecent] = useState([
-    {
-      img: DummyProfile,
-    },
-    {
-      img: DummyProfile,
-    },
-    {
-      img: DummyProfile,
-    },
-    {
-      img: DummyProfile,
-    },
-    {
-      img: DummyProfile,
-    },
-    {
-      img: DummyProfile,
-    },
-    {
-      img: DummyProfile,
-    },
-    {
-      img: DummyProfile,
-    },
-    {
-      img: DummyProfile,
-    },
-    {
-      img: DummyProfile,
-    },
-  ]);
+  const [contactRecent, setContactRecent] = useState([]);
   return {
     contactRecent,
     setContactRecent,

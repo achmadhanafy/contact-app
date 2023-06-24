@@ -9,6 +9,7 @@ export const SCREEN = {
   },
   CONTACT: {
     ContactDetail: 'ContactDetail',
+    ContactAdd: 'ContactAdd',
   },
 };
 

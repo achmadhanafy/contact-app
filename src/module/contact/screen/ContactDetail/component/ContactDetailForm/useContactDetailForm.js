@@ -1,7 +1,12 @@
 import {useState} from 'react';
 
 const useContactDetailForm = () => {
-  const [contact, setContact] = useState({});
+  const [contact, setContact] = useState({
+    firstName: '',
+    lastName: '',
+    age: '',
+    photo: 'none',
+  });
   return {contact, setContact};
 };
 

@@ -5,7 +5,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {SCREEN} from '../util/constant';
 import {HomeMain} from '../module/home/screen';
 import {SplashScreen} from '../component';
-import ContactDetail from '../module/contact/screen/ContactDetail';
+import {ContactAdd, ContactDetail} from '../module/contact/screen';
 
 const Stack = createStackNavigator();
 
@@ -24,6 +24,7 @@ function Navigator() {
           name={SCREEN.CONTACT.ContactDetail}
           component={ContactDetail}
         />
+        <Stack.Screen name={SCREEN.CONTACT.ContactAdd} component={ContactAdd} />
       </Stack.Navigator>
     </NavigationContainer>
   );

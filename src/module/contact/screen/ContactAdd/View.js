@@ -4,31 +4,28 @@ import {Container, Input, ModalCustom, Text} from '../../../../component';
 import {ModalUploadPhoto, PhotoPreview} from '../../component';
 import {DummyProfile} from '../../../../config/Image';
 import {Color} from '../../../../config/Color';
-import ContactDetailForm from './component/ContactDetailForm';
-import useContactDetailForm from './component/ContactDetailForm/useContactDetailForm';
 import Button from '../../../../component/Button';
-import {SIZE} from '../../../../util/constant';
+import {SCREEN, SIZE} from '../../../../util/constant';
 import {EditPen, SavePaper} from '../../../../config/Svg';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import {IMGBB_API_KEY, apiImGb} from '../../../../util/config';
+import useContactDetailForm from '../ContactDetail/component/ContactDetailForm/useContactDetailForm';
+import {ContactDetailForm} from '../ContactDetail/component';
 
-function ContactDetail(props) {
+function ContactAdd(props) {
   const {
     colorScheme,
     navigation,
-    getContactResponse,
-    getContact,
-    putContact,
+    setContact: saveContact,
     route: {params},
   } = props;
 
-  const [editable, setEditable] = useState(false);
   const [isShowConfirm, setIsShowConfirm] = useState(false);
   const [isShowUpload, setIsShowUpload] = useState(false);
   const [imagePick, setImagePick] = useState({});
 
   const contactDetailForm = useContactDetailForm();
-  const {contact: detailContact, setContact} = contactDetailForm;
+  const {contact: detailContact} = contactDetailForm;
 
   const isDisabled = useMemo(() => {
     const inputForm = Object.values(detailContact);
@@ -42,82 +39,32 @@ function ContactDetail(props) {
     return disable;
   }, [detailContact]);
 
-  const contact = useMemo(() => {
-    const data = {
-      id: getContactResponse?.data?.id,
-      photo: getContactResponse?.data?.photo,
-      firstName: getContactResponse?.data?.firstName,
-      lastName: getContactResponse?.data?.lastName,
-      age: getContactResponse?.data?.age,
-    };
-    if (data?.firstName) {
-      setContact(data);
-    }
-    return data;
-  }, [getContactResponse, setContact]);
-
-  useEffect(() => {
-    getContact(params?.contactId);
-  }, [getContact, params]);
-
-  const renderButton = () => {
-    return (
-      <Button
-        disabled={isDisabled}
-        onPress={() => {
-          if (editable) {
-            return setIsShowConfirm(true);
-          }
-          setEditable(true);
-        }}
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          width: SIZE.screen.width - 32,
-          alignSelf: 'center',
-          marginBottom: 24,
-        }}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Text
-            style={{marginRight: 10}}
-            size={16}
-            weight={700}
-            color={Color.white[colorScheme]}>
-            {editable ? 'Save' : 'Edit'}
-          </Text>
-          {!editable && (
-            <EditPen width={20} height={20} fill={Color.white[colorScheme]} />
-          )}
-        </View>
-      </Button>
-    );
-  };
+  // useEffect(() => {
+  //   getContact(params?.contactId);
+  // }, [getContact, params]);
 
   const setSave = imgUrl => {
-    putContact({
-      id: detailContact.id,
+    saveContact({
       data: {
         firstName: detailContact.firstName,
         lastName: detailContact.lastName,
         age: Number(detailContact.age),
-        photo: imgUrl || detailContact.photo,
+        photo: imgUrl || 'none',
       },
       onSuccess: () => {
-        setEditable(false);
         setIsShowConfirm(false);
         Toast.show({
           type: 'success',
-          text1: 'Data updated successfully !',
+          text1: 'Data saved successfully !',
         });
+        navigation.navigate(SCREEN.Home.HomeMain);
       },
       onFailed: () => {
-        setEditable(false);
         setIsShowConfirm(false);
         Toast.show({
           type: 'error',
           text1: 'Sorry, an error occurred !',
         });
-        setContact(contact);
       },
     });
   };
@@ -137,17 +84,15 @@ function ContactDetail(props) {
     apiImGb
       .post(`1/upload?key=${IMGBB_API_KEY}`, sendData)
       .then(res => {
-        console.log(res)
+        console.log(res);
         setSave(res?.data?.data?.url);
       })
       .catch(err => {
-        setEditable(false);
         setIsShowConfirm(false);
         Toast.show({
           type: 'error',
           text1: 'Sorry, an error occurred !',
         });
-        setContact(contact);
       });
   };
 
@@ -158,6 +103,31 @@ function ContactDetail(props) {
     return setSave();
   };
 
+  const renderButton = () => {
+    return (
+      <Button
+        onPress={() => setIsShowConfirm(true)}
+        disabled={isDisabled}
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          width: SIZE.screen.width - 32,
+          alignSelf: 'center',
+          marginBottom: 24,
+        }}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text
+            style={{marginRight: 10}}
+            size={16}
+            weight={700}
+            color={Color.white[colorScheme]}>
+            Save
+          </Text>
+        </View>
+      </Button>
+    );
+  };
+
   const renderModalConfirm = () => {
     return (
       <ModalCustom
@@ -166,8 +136,8 @@ function ContactDetail(props) {
           setIsShowConfirm(false);
         }}
         onPrimaryPress={() => onSaveForm()}
-        primaryLabel="Save"
-        text="Are you sure to make these changes ?"
+        primaryLabel="Yes, Save"
+        text="The data that you have entered will be saved"
         img={<SavePaper width={150} height={150} />}
       />
     );
@@ -180,7 +150,6 @@ function ContactDetail(props) {
         isVisbile={isShowUpload}
         onImagePick={img => {
           setImagePick(img);
-          setEditable(true);
         }}
       />
     );
@@ -188,27 +157,22 @@ function ContactDetail(props) {
 
   return (
     <Container
-      title="Contact Detail"
+      title="Add Contact"
       onBackPress={() => navigation.pop()}
       colorScheme={colorScheme}>
       <View style={{flex: 1, paddingHorizontal: 16}}>
         <View style={{alignItems: 'center'}}>
           <PhotoPreview
-            imagePick={{uri: imagePick?.path}}
             colorScheme={colorScheme}
             onEditPress={() => setIsShowUpload(true)}
-            source={
-              contact.photo?.includes('http')
-                ? {uri: contact.photo}
-                : DummyProfile
-            }
+            source={imagePick?.path ? {uri: imagePick?.path} : DummyProfile}
           />
         </View>
         <View style={{marginTop: 24}}>
           <ContactDetailForm
             contactDetailForm={contactDetailForm}
             colorScheme={colorScheme}
-            editable={editable}
+            editable
           />
         </View>
         {renderButton()}
@@ -219,4 +183,4 @@ function ContactDetail(props) {
   );
 }
 
-export default ContactDetail;
+export default ContactAdd;

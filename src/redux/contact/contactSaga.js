@@ -33,7 +33,9 @@ function* setContact(params) {
   try {
     const response = yield call(setContactApi, params.payload);
     yield put(setContactSucess(response?.data));
+    params.payload?.onSuccess();
   } catch (error) {
+    params.payload?.onFailed();
     yield put(setContactError(error?.response?.data));
   }
 }

@@ -9,7 +9,7 @@ export const getContactsApi = payload => {
 };
 
 export const setContactApi = payload => {
-  return api.post(contactApi.contact, payload);
+  return api.post(contactApi.contact, payload.data);
 };
 
 export const delContactApi = payload => {

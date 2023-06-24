@@ -101,6 +101,7 @@ export const contactReducer = (state = contactInitialState, action) => {
       ...state,
       getContactParam: payload,
       getContactFetch: true,
+      getContactResponse: {},
       action: type,
     }),
     [CONST.GET_CONTACT_SUCCESS]: () => ({
