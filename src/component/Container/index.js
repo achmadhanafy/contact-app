@@ -29,28 +29,19 @@ function Container({
         barStyle={statusBarStyle || 'dark-content'}
         backgroundColor={statusBarColor || 'transparent'}
       />
-      <View style={{flex:1}}>
+      <View style={{flex: 1}}>
         {title && (
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              paddingVertical: 24
-            }}>
+          <View style={style.headerContainer}>
             {onBackPress && (
-              <View style={{position: 'absolute', left: 16}}>
+              <View style={style.backPressContainer}>
                 <TouchableOpacity
                   onPress={onBackPress}
-                  style={{
-                    borderColor: Color.black[colorScheme],
-                    borderWidth: 1,
-                    borderRadius: 16,
-                    width: 30,
-                    height: 30,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
+                  style={[
+                    style.backPress,
+                    {
+                      borderColor: Color.black[colorScheme],
+                    },
+                  ]}>
                   <ChevronLeft
                     fill={Color.black[colorScheme]}
                     width={20}

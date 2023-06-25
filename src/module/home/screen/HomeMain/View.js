@@ -1,31 +1,21 @@
 import {
   View,
-  Image,
   ScrollView,
-  Modal,
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
-import {Container, Input, ModalCustom, Text} from '../../../../component';
-import {SplashLogo} from '../../../../config/Image';
-import {
-  CirclePlus,
-  DataNotFound,
-  DeleteData,
-  Search,
-} from '../../../../config/Svg';
+import React, {useEffect, useState} from 'react';
+import {Container, ModalCustom, Text} from '../../../../component';
+import {CirclePlus, DataNotFound, DeleteData} from '../../../../config/Svg';
 import {Color} from '../../../../config/Color';
 import {HomeContactList, HomeHeader} from './component';
 import useHomeHeader from './component/HomeHeader/useHomeHeader';
 import useHomeContactList from './component/HomeContactList/useHomeContactList';
-import {BASE_URL, api} from '../../../../util/config';
-import {contactApi} from '../../../../redux/contact/contactApi';
 import {SCREEN} from '../../../../util/constant';
-import {useFocusEffect, useIsFocused} from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import {debounce} from 'lodash';
-import {setContact} from '../../../../redux/contact/contactAction';
+import style from './style';
 
 function HomeMain(props) {
   const {
@@ -33,7 +23,6 @@ function HomeMain(props) {
     navigation,
     getContacts,
     getContactsResponse,
-    getContactClear,
     getContactsError,
     getContactsFetch,
     delContact,
@@ -98,12 +87,12 @@ function HomeMain(props) {
         primaryLabel="Delete"
         img={
           <View
-            style={{
-              backgroundColor: Color.white[colorScheme],
-              paddingHorizontal: 16,
-              borderTopRightRadius: 30,
-              borderTopLeftRadius: 30,
-            }}>
+            style={[
+              style.deleteConfirm,
+              {
+                backgroundColor: Color.white[colorScheme],
+              },
+            ]}>
             <DeleteData width={150} height={150} />
           </View>
         }
@@ -134,12 +123,7 @@ function HomeMain(props) {
 
   const renderAddButton = () => {
     return (
-      <View
-        style={{
-          position: 'absolute',
-          bottom: 40,
-          right: 40,
-        }}>
+      <View style={style.addButton}>
         <TouchableOpacity
           onPress={() => navigation.navigate(SCREEN.CONTACT.ContactAdd)}>
           <CirclePlus
@@ -155,7 +139,7 @@ function HomeMain(props) {
   const renderListContact = () => {
     if (getContactsFetch && !getContactsResponse?.data) {
       return (
-        <View style={{marginTop: 24}}>
+        <View style={style.mt24}>
           <ActivityIndicator
             size={'large'}
             color={Color.primary30[colorScheme]}
@@ -165,7 +149,7 @@ function HomeMain(props) {
     }
     if (notFound || getContactsError?.message?.length) {
       return (
-        <View style={{marginTop: 46, alignItems: 'center'}}>
+        <View style={style.listContact.notFound}>
           <DataNotFound width={200} height={200} />
           <Text weight={600} size={18}>
             {notFound
@@ -195,7 +179,7 @@ function HomeMain(props) {
 
   return (
     <Container title="Contact List" colorScheme={colorScheme}>
-      <View style={{paddingHorizontal: 16, flex: 1}}>
+      <View style={style.main.container}>
         <HomeHeader
           onRecentPress={id => {
             navigation.navigate(SCREEN.CONTACT.ContactDetail, {

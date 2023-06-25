@@ -5,6 +5,7 @@ import {Color} from '../../../../../../config/Color';
 import {capitalizeFirstLetter} from '../../../../../../util/function';
 import {Trash} from '../../../../../../config/Svg';
 import {DummyProfile} from '../../../../../../config/Image';
+import style from './style';
 
 function HomeContactList({
   homeContactList,
@@ -15,22 +16,18 @@ function HomeContactList({
   const {listContact} = homeContactList;
 
   return (
-    <View style={{marginTop: 24, paddingBottom: 450}}>
+    <View style={style.main}>
       {listContact?.map(element => (
         <TouchableOpacity
           onPress={() => onContactPress(element)}
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginBottom: 24,
-          }}>
+          style={style.container}>
           <Image
             source={
               element?.photo?.includes('http')
                 ? {uri: element?.photo}
                 : DummyProfile
             }
-            style={{width: 40, height: 40, borderRadius: 20, marginRight: 10}}
+            style={style.img}
           />
           <View>
             <Text size={14} color={Color.black[colorScheme]} weight={600}>
@@ -41,7 +38,7 @@ function HomeContactList({
               {element?.age}
             </Text>
           </View>
-          <View style={{position: 'absolute', right: 20}}>
+          <View style={style.delete}>
             <TouchableOpacity onPress={() => onDeletePress(element?.id)}>
               <Trash
                 fill={Color.redDanger[colorScheme]}

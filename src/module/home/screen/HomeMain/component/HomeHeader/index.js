@@ -1,10 +1,11 @@
-import {View, Image, useMemo} from 'react-native';
-import React, {useState, useCallback} from 'react';
+import {View, Image} from 'react-native';
+import React, {useState} from 'react';
 import {Input, Text} from '../../../../../../component';
 import {Close, Search} from '../../../../../../config/Svg';
 import {Color} from '../../../../../../config/Color';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {DummyProfile} from '../../../../../../config/Image';
+import style from './style';
 
 function HomeHeader({
   colorScheme,
@@ -20,14 +21,12 @@ function HomeHeader({
       <View>
         <TouchableOpacity onPress={() => onRecentPress(id)}>
           <View
-            style={{
-              position: 'absolute',
-              top: 0,
-              right: 0,
-              zIndex: 10,
-              backgroundColor: Color.primary30[colorScheme],
-              borderRadius: 15,
-            }}>
+            style={[
+              style.contactRecent.container,
+              {
+                backgroundColor: Color.primary30[colorScheme],
+              },
+            ]}>
             <TouchableOpacity
               onPress={() => {
                 const deleteArray = contactRecent?.filter(element => {
@@ -41,26 +40,20 @@ function HomeHeader({
 
           <Image
             source={img?.uri?.includes('http') ? img : DummyProfile}
-            style={{width: 40, height: 40, borderRadius: 25}}
+            style={style.contactRecent.img}
           />
         </TouchableOpacity>
       </View>
     );
   };
   return (
-    <View style={{marginBottom: 16}}>
+    <View style={style.mb16}>
       {contactRecent?.length > 0 && (
-        <View
-          style={{
-            marginTop: 24,
-            marginBottom: 10,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-          }}>
+        <View style={style.main.recent}>
           <Text weight={600}>Recents</Text>
           <TouchableOpacity onPress={() => setContactRecent([])}>
             <Text
-              style={{textDecorationLine: 'underline'}}
+              style={style.underline}
               color={Color.redDanger[colorScheme]}
               weight={600}>
               Clear
@@ -69,7 +62,7 @@ function HomeHeader({
         </View>
       )}
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-        <View style={{flexDirection: 'row', gap: 16}}>
+        <View style={style.main.recentMap}>
           {contactRecent?.map(element =>
             renderContactRecent({img: {uri: element?.photo}, id: element?.id}),
           )}
@@ -81,7 +74,7 @@ function HomeHeader({
           setSearch(val);
           onDebounce(val);
         }}
-        style={{marginTop: 24}}
+        style={style.mt24}
         prefix={
           <Search width={20} height={20} fill={Color.primary20[colorScheme]} />
         }

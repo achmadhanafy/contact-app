@@ -1,24 +1,21 @@
 import {View} from 'react-native';
-import React, {useEffect, useMemo, useState} from 'react';
-import {Container, Input, ModalCustom, Text} from '../../../../component';
+import React, {useMemo, useState} from 'react';
+import {Container, ModalCustom, Text} from '../../../../component';
 import {ModalUploadPhoto, PhotoPreview} from '../../component';
 import {DummyProfile} from '../../../../config/Image';
 import {Color} from '../../../../config/Color';
 import Button from '../../../../component/Button';
-import {SCREEN, SIZE} from '../../../../util/constant';
-import {EditPen, SavePaper} from '../../../../config/Svg';
+import {SCREEN} from '../../../../util/constant';
+import {SavePaper} from '../../../../config/Svg';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import {IMGBB_API_KEY, apiImGb} from '../../../../util/config';
 import useContactDetailForm from '../ContactDetail/component/ContactDetailForm/useContactDetailForm';
 import {ContactDetailForm} from '../ContactDetail/component';
+import style from './style';
+import {ScrollView} from 'react-native-gesture-handler';
 
 function ContactAdd(props) {
-  const {
-    colorScheme,
-    navigation,
-    setContact: saveContact,
-    route: {params},
-  } = props;
+  const {colorScheme, navigation, setContact: saveContact} = props;
 
   const [isShowConfirm, setIsShowConfirm] = useState(false);
   const [isShowUpload, setIsShowUpload] = useState(false);
@@ -38,10 +35,6 @@ function ContactAdd(props) {
     });
     return disable;
   }, [detailContact]);
-
-  // useEffect(() => {
-  //   getContact(params?.contactId);
-  // }, [getContact, params]);
 
   const setSave = imgUrl => {
     saveContact({
@@ -88,6 +81,7 @@ function ContactAdd(props) {
         setSave(res?.data?.data?.url);
       })
       .catch(err => {
+        console.log(err);
         setIsShowConfirm(false);
         Toast.show({
           type: 'error',
@@ -108,16 +102,10 @@ function ContactAdd(props) {
       <Button
         onPress={() => setIsShowConfirm(true)}
         disabled={isDisabled}
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          width: SIZE.screen.width - 32,
-          alignSelf: 'center',
-          marginBottom: 24,
-        }}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        style={style.button.container}>
+        <View style={style.button.item}>
           <Text
-            style={{marginRight: 10}}
+            style={style.mr10}
             size={16}
             weight={700}
             color={Color.white[colorScheme]}>
@@ -160,23 +148,25 @@ function ContactAdd(props) {
       title="Add Contact"
       onBackPress={() => navigation.pop()}
       colorScheme={colorScheme}>
-      <View style={{flex: 1, paddingHorizontal: 16}}>
-        <View style={{alignItems: 'center'}}>
-          <PhotoPreview
-            colorScheme={colorScheme}
-            onEditPress={() => setIsShowUpload(true)}
-            source={imagePick?.path ? {uri: imagePick?.path} : DummyProfile}
-          />
+      <ScrollView style={{flex: 1}}>
+        <View style={style.main.container}>
+          <View style={style.itemCenter}>
+            <PhotoPreview
+              colorScheme={colorScheme}
+              onEditPress={() => setIsShowUpload(true)}
+              source={imagePick?.path ? {uri: imagePick?.path} : DummyProfile}
+            />
+          </View>
+          <View style={style.mt24}>
+            <ContactDetailForm
+              contactDetailForm={contactDetailForm}
+              colorScheme={colorScheme}
+              editable
+            />
+          </View>
         </View>
-        <View style={{marginTop: 24}}>
-          <ContactDetailForm
-            contactDetailForm={contactDetailForm}
-            colorScheme={colorScheme}
-            editable
-          />
-        </View>
-        {renderButton()}
-      </View>
+      </ScrollView>
+      {renderButton()}
       {renderModalConfirm()}
       {renderModalUploadPhoto()}
     </Container>
