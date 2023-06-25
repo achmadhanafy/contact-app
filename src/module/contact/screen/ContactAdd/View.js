@@ -62,7 +62,7 @@ function ContactAdd(props) {
     });
   };
 
-  const onUploadImage = image => {
+  const onUploadImage = async image => {
     const payload = {
       file: image.path,
       fileName: image.filename ?? 'profile.jpg',

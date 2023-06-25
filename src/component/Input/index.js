@@ -28,7 +28,11 @@ function Input({
       <View style={[Style.container]}>
         {prefix}
         <TextInput
-          style={{width: '100%'}}
+          style={{
+            width: '100%',
+            color: editable ? Color.black.light : Color.neutral.light,
+          }}
+          placeholderTextColor={Color.neutral.light}
           onChangeText={txt => onChange(txt)}
           value={value}
           editable={editable}

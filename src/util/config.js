@@ -15,8 +15,7 @@ export const api = axios.create({
 export const apiImGb = axios.create({
   timeout: 35000,
   headers: {
-    'X-Requested-With': 'XMLHttpRequest',
-    'Cache-Control': 'no-store',
+    'Content-Type': 'multipart/form-data',
   },
   baseURL: IMGBB_BASEURL,
 });
