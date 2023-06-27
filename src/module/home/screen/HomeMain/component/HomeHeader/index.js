@@ -1,9 +1,8 @@
-import {View, Image} from 'react-native';
+import {View, Image, TouchableOpacity, ScrollView} from 'react-native';
 import React, {useState} from 'react';
 import {Input, Text} from '../../../../../../component';
 import {Close, Search} from '../../../../../../config/Svg';
 import {Color} from '../../../../../../config/Color';
-import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {DummyProfile} from '../../../../../../config/Image';
 import style from './style';
 

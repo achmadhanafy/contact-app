@@ -9,3 +9,4 @@ export {default as DeleteData} from '../asset/svg/DeleteData.svg';
 export {default as AvatarPhoto} from '../asset/svg/AvatarPhoto.svg';
 export {default as CirclePlus} from '../asset/svg/CirclePlus.svg';
 export {default as DataNotFound} from '../asset/svg/DataNotFound.svg';
+
